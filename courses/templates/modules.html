@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="modules-wrapper">
+  <h2 class="modules-title">
+    {{ course.title }}
+    <span class="subtitle">Course Modules</span>
+  </h2>
+
+  <div class="modules-grid">
+    {% for module in modules %}
+      <div class="module-card">
+        <div class="module-info">
+          <span class="module-number">Module {{ forloop.counter }}</span>
+          <h4>{{ module.title }}</h4>
+        </div>
+
+        <a href="/module/{{ module.id }}/watch/" class="watch-btn">
+  ▶ Watch Video
+</a>
+
+      </div>
+    {% empty %}
+      <p>No modules available.</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}
+

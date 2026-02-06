@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="page-title">My Dashboard</h2>
+
+<div class="grid">
+{% for enroll in enrollments %}
+    <div class="card">
+        <h3>{{ enroll.course.title }}</h3>
+        <p>Progress: {{ enroll.progress }}%</p>
+
+        <div class="progress-bar">
+            <div style="width: {{ enroll.progress }}%"></div>
+        </div>
+
+        <a href="/course/{{ enroll.course.id }}/modules/" class="btn">
+    Continue
+</a>
+    </div>
+{% empty %}
+    <p>You haven’t enrolled in any courses yet.</p>
+{% endfor %}
+</div>
+
+{% endblock %}

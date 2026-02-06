@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Buy {{ course.title }}</h2>
+<p>Total Amount: ₹{{ amount }}</p>
+
+<button id="pay-btn" class="btn">Pay Now</button>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+var options = {
+    "key": "{{ razorpay_key }}",
+    "amount": "{{ amount|add:'0' }}00",
+    "currency": "INR",
+    "name": "E-Learning Platform",
+    "description": "{{ course.title }}",
+    "order_id": "{{ order_id }}",
+    "handler": function (response) {
+        alert("Payment Successful!");
+        window.location.href = "/dashboard/";
+    }
+};
+
+var rzp1 = new Razorpay(options);
+document.getElementById("pay-btn").onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+
+{% endblock %}

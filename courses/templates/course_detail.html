@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="course-detail">
+    <img src="{{ course.thumbnail }}" class="course-img">
+
+    <div class="course-info">
+        <h2>{{ course.title }}</h2>
+        <p>{{ course.description }}</p>
+        <h3>₹{{ course.price }}</h3>
+
+        {% if user.is_authenticated %}
+            {% if enrolled %}
+                <button class="btn" disabled>Enrolled</button>
+            {% else %}
+                <a href="/buy/{{ course.id }}/" class="btn">Buy Now</a>
+            {% endif %}
+        {% else %}
+            <a href="/login/" class="btn">Login to Buy</a>
+        {% endif %}
+    </div>
+</div>
+
+<hr>
+
+<!-- ================= Reviews Section ================= -->
+<h3>Student Reviews</h3>
+
+{% for review in reviews %}
+  <div class="review-card">
+    <strong>{{ review.user.username }}</strong>
+    <span>⭐ {{ review.rating }}/5</span>
+    <p>{{ review.comment }}</p>
+  </div>
+{% empty %}
+  <p>No reviews yet.</p>
+{% endfor %}
+
+<!-- ================= Add Review Form ================= -->
+<hr>
+<h3>Add Your Review</h3>
+
+{% if user.is_authenticated %}
+<form method="POST" action="/course/{{ course.id }}/review/" class="review-form">
+  {% csrf_token %}
+
+  <label>Rating</label>
+  <select name="rating" required>
+    <option value="">Select</option>
+    <option value="5">⭐⭐⭐⭐⭐</option>
+    <option value="4">⭐⭐⭐⭐</option>
+    <option value="3">⭐⭐⭐</option>
+    <option value="2">⭐⭐</option>
+    <option value="1">⭐</option>
+  </select>
+
+  <label>Comment</label>
+  <textarea name="comment" rows="4" required></textarea>
+
+  <button type="submit" class="watch-btn">Submit Review</button>
+</form>
+{% else %}
+  <p>Please <a href="/login/">login</a> to add a review.</p>
+{% endif %}
+
+{% endblock %}
